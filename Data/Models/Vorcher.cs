@@ -16,7 +16,7 @@ namespace Data.Models
         public int Value { get; set; }
         public int Quantity { get; set; }
         public int Status { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime Last_modified_date { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Data.Interface
 {
-    public interface ISavis<T> 
+    public interface IAllinterface<T> where T : class
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<T> GetById(Guid Id);
+        Task<IEnumerable<T>> GetAll();       
         Task<bool> Add(T item);
         Task<bool> Update(T item);
-        Task<bool> Delete(Guid Id);
+        Task<bool> Delete(Guid  Id);
     }
 }

@@ -12,7 +12,7 @@ namespace Data.Models
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }= DateTime.Now;
         public DateTime Last_modified_date { get; set; }
         public int Status { get; set; }
     }

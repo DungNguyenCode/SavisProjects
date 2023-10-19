@@ -29,7 +29,7 @@ namespace Data.Models
         public string ?Description { get; set; }
         public int Gender { get; set; }
         public int Status { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime Last_modified_date { get; set; }
         public virtual Size? Size { get; set; }
         public virtual Color? Color { get; set; }

@@ -18,7 +18,7 @@ namespace Data.Models
         public string ?Description { get; set; }
         public float TotalMoney { get; set; }
         public int Status { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;    
         public DateTime Last_modified_date { get; set; }
         public virtual Order? Order { get; set; }
     }
