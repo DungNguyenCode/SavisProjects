@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class ImageService : IAllinterface<Image>
+    public class MaterialService :IAllinterface<Material>
     {
         private readonly ContextDb _dbContext;
 
-        public ImageService(ContextDb dbContext)
+        public MaterialService(ContextDb dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<bool> Add(Image item)
+        public async Task<bool> Add(Material item)
         {
             if (item != null)
             {
@@ -32,7 +32,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Images.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.Materials.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {
@@ -41,24 +41,22 @@ namespace Data.Services
                 return true;
             }
             return false;
-
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<Material>> GetAll()
         {
-            return await _dbContext.Images.ToListAsync();
+            return await _dbContext.Materials.ToListAsync();
         }
 
-        public async Task<bool> Update(Image item)
+        public async Task<bool> Update(Material item)
         {
-            var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);
+            var temp = _dbContext.Materials.FirstOrDefault(a => a.Id == item.Id);
             if (temp != null)
             {
-                temp.Status = item.Status;
+              temp.Status = item.Status;
                 temp.Name = item.Name;
-                temp.Id_Product_details = item.Id_Product_details;
-                temp.ImageFile = item.ImageFile;
                 temp.Last_modified_date = DateTime.Now;
+                temp.Status = temp.Status;              
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

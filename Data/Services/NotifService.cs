@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class ImageService : IAllinterface<Image>
+    public class NotifService:IAllinterface<Notifi>
     {
         private readonly ContextDb _dbContext;
 
-        public ImageService(ContextDb dbContext)
+        public NotifService(ContextDb dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<bool> Add(Image item)
+        public async Task<bool> Add(Notifi item)
         {
             if (item != null)
             {
@@ -32,7 +31,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Images.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.Notifis.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {
@@ -41,24 +40,22 @@ namespace Data.Services
                 return true;
             }
             return false;
-
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<Notifi>> GetAll()
         {
-            return await _dbContext.Images.ToListAsync();
+            return await _dbContext.Notifis.ToListAsync();
         }
 
-        public async Task<bool> Update(Image item)
+        public async Task<bool> Update(Notifi item)
         {
-            var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);
+            var temp = _dbContext.Notifis.FirstOrDefault(a => a.Id == item.Id);
             if (temp != null)
             {
                 temp.Status = item.Status;
-                temp.Name = item.Name;
-                temp.Id_Product_details = item.Id_Product_details;
-                temp.ImageFile = item.ImageFile;
                 temp.Last_modified_date = DateTime.Now;
+                temp.Id_account = item.Id_account;
+                temp.Noti_conten = item.Noti_conten;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

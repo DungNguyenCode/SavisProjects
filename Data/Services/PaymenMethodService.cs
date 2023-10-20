@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class ImageService : IAllinterface<Image>
+    public class PaymenMethodService:IAllinterface<PaymentMethod>
+
     {
         private readonly ContextDb _dbContext;
 
-        public ImageService(ContextDb dbContext)
+        public PaymenMethodService(ContextDb dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<bool> Add(Image item)
+        public async Task<bool> Add(PaymentMethod item)
         {
             if (item != null)
             {
@@ -32,7 +32,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Images.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.PaymentMethods.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {
@@ -41,24 +41,25 @@ namespace Data.Services
                 return true;
             }
             return false;
-
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<PaymentMethod>> GetAll()
         {
-            return await _dbContext.Images.ToListAsync();
+            return await _dbContext.PaymentMethods.ToListAsync();
         }
 
-        public async Task<bool> Update(Image item)
+        public async Task<bool> Update(PaymentMethod item)
         {
-            var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);
+            var temp = _dbContext.PaymentMethods.FirstOrDefault(a => a.Id == item.Id);
             if (temp != null)
             {
+              
                 temp.Status = item.Status;
-                temp.Name = item.Name;
-                temp.Id_Product_details = item.Id_Product_details;
-                temp.ImageFile = item.ImageFile;
+                temp.Method = item.Method;
+                temp.Description = item.Description;
+                temp.Id_order = item.Id_order;
                 temp.Last_modified_date = DateTime.Now;
+                temp.TotalMoney = item.TotalMoney;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

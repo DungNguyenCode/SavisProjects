@@ -15,7 +15,7 @@ namespace Data.Models
         public Guid Id { get; set; }
         public string Noti_conten { get; set; }
         public int Status { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         public DateTime Last_modified_date { get; set; }
         [ForeignKey("Account")]
         public Guid Id_account { get; set; }

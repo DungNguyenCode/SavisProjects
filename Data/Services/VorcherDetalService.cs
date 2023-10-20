@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class ImageService : IAllinterface<Image>
+    public class VorcherDetalService : IAllinterface<VorcherDetail>
     {
         private readonly ContextDb _dbContext;
 
-        public ImageService(ContextDb dbContext)
+        public VorcherDetalService(ContextDb dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<bool> Add(Image item)
+        public async Task<bool> Add(VorcherDetail item)
         {
             if (item != null)
             {
@@ -32,7 +31,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Images.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.VorcherDetails.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {
@@ -41,24 +40,23 @@ namespace Data.Services
                 return true;
             }
             return false;
-
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<VorcherDetail>> GetAll()
         {
-            return await _dbContext.Images.ToListAsync();
+            return await _dbContext.VorcherDetails.ToListAsync();
         }
 
-        public async Task<bool> Update(Image item)
+        public async Task<bool> Update(VorcherDetail item)
         {
-            var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);
+            var temp = _dbContext.VorcherDetails.FirstOrDefault(a => a.Id == item.Id);
             if (temp != null)
             {
-                temp.Status = item.Status;
-                temp.Name = item.Name;
-                temp.Id_Product_details = item.Id_Product_details;
-                temp.ImageFile = item.ImageFile;
-                temp.Last_modified_date = DateTime.Now;
+                temp.AfterPrice = item.AfterPrice;
+                temp.BeforPrice = item.BeforPrice;
+                temp.DiscountPrice = item.DiscountPrice;
+                temp.Id_order = item.Id_order;
+                temp.Id_Voucher = item.Id_Voucher;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

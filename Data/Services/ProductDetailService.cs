@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class ImageService : IAllinterface<Image>
+    public class ProductDetailService:IAllinterface<ProductDetail>
     {
         private readonly ContextDb _dbContext;
 
-        public ImageService(ContextDb dbContext)
+        public ProductDetailService(ContextDb dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<bool> Add(Image item)
+        public async Task<bool> Add(ProductDetail item)
         {
             if (item != null)
             {
@@ -32,7 +31,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Images.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.ProductDetails.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {
@@ -41,24 +40,30 @@ namespace Data.Services
                 return true;
             }
             return false;
-
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<ProductDetail>> GetAll()
         {
-            return await _dbContext.Images.ToListAsync();
+            return await _dbContext.ProductDetails.ToListAsync();
         }
 
-        public async Task<bool> Update(Image item)
+        public async Task<bool> Update(ProductDetail item)
         {
-            var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);
+            var temp = _dbContext.ProductDetails.FirstOrDefault(a => a.Id == item.Id);
             if (temp != null)
             {
+               temp.Price = item.Price;
+                temp.Id_Product = item.Id_Product;
+                temp.Id_Material = item.Id_Material;
+                temp.Id_Brand = item.Id_Brand;
                 temp.Status = item.Status;
-                temp.Name = item.Name;
-                temp.Id_Product_details = item.Id_Product_details;
-                temp.ImageFile = item.ImageFile;
+                temp.Description = item.Description;
+                temp.Id_Color = item.Id_Color;
+                temp.Id_Product = item.Id_Product;
+                temp.Id_Size = item.Id_Size;
                 temp.Last_modified_date = DateTime.Now;
+                temp.Gender = item.Gender;
+                temp.Description = item.Description;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

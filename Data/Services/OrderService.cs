@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class ImageService : IAllinterface<Image>
+    public class OrderService:IAllinterface<Order>
     {
         private readonly ContextDb _dbContext;
 
-        public ImageService(ContextDb dbContext)
+        public OrderService(ContextDb dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public async Task<bool> Add(Image item)
+        public async Task<bool> Add(Order item)
         {
             if (item != null)
             {
@@ -32,7 +31,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Images.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.Orders.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {
@@ -41,23 +40,24 @@ namespace Data.Services
                 return true;
             }
             return false;
-
         }
 
-        public async Task<IEnumerable<Image>> GetAll()
+        public async Task<IEnumerable<Order>> GetAll()
         {
-            return await _dbContext.Images.ToListAsync();
+            return await _dbContext.Orders.ToListAsync();
         }
 
-        public async Task<bool> Update(Image item)
+        public async Task<bool> Update(Order item)
         {
-            var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);
+            var temp = _dbContext.Orders.FirstOrDefault(a => a.Id == item.Id);
             if (temp != null)
             {
+              temp.Address = item.Address;
+                temp.PhoneNumber = item.PhoneNumber;
+                temp.Transportfee = item.Transportfee;
+                temp.Id_Account = item.Id_Account;
                 temp.Status = item.Status;
-                temp.Name = item.Name;
-                temp.Id_Product_details = item.Id_Product_details;
-                temp.ImageFile = item.ImageFile;
+                temp.TotalMoney = item.TotalMoney;
                 temp.Last_modified_date = DateTime.Now;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
