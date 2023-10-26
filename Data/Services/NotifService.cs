@@ -47,6 +47,11 @@ namespace Data.Services
             return await _dbContext.Notifis.ToListAsync();
         }
 
+        public Task<Notifi> GetById(Guid Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> Update(Notifi item)
         {
             var temp = _dbContext.Notifis.FirstOrDefault(a => a.Id == item.Id);

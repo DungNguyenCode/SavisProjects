@@ -8,7 +8,8 @@ namespace Data.Interface
 {
     public interface IAllinterface<T> where T : class
     {
-        Task<IEnumerable<T>> GetAll();       
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById(Guid Id);
         Task<bool> Add(T item);
         Task<bool> Update(T item);
         Task<bool> Delete(Guid  Id);

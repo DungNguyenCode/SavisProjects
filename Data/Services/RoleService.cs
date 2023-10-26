@@ -47,6 +47,20 @@ namespace Data.Services
             return await _dbContext.Roles.ToListAsync();
         }
 
+        public async Task<Role> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Roles.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(Role item)
         {
             var temp = _dbContext.Roles.FirstOrDefault(a => a.Id == item.Id);

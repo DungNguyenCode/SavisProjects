@@ -49,6 +49,20 @@ namespace Data.Services
            return await _dbContext.Accounts.ToListAsync();
         }
 
+        public async Task<Accounts> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Accounts.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(Accounts item)
         {
             var temp = _dbContext.Accounts.FirstOrDefault(a => a.Id == item.Id);

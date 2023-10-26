@@ -47,6 +47,20 @@ namespace Data.Services
             return await _dbContext.Products.ToListAsync();
         }
 
+        public async Task<Product> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(Product item)
         {
             var temp = _dbContext.Products.FirstOrDefault(a => a.Id == item.Id);

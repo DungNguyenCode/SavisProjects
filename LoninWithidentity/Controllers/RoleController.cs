@@ -60,5 +60,15 @@ namespace API.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("getbyid/{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            if (id != Guid.Empty)
+            {
+                var item = await _IAll.GetById(id);
+                return Ok(item);
+            }
+            return NotFound();
+        }
     }
 }

@@ -58,7 +58,17 @@ namespace API.Controllers
                 await _IAll.Delete(id);
                 return Ok();
             }
-            return BadRequest();
+            return NotFound();
+        }
+        [HttpGet("getbyid/{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            if (id!=Guid.Empty)
+            {
+                var item = await _IAll.GetById(id);
+                return Ok(item);
+            }
+            return NotFound();
         }
     }
 }

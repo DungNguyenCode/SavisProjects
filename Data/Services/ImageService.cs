@@ -49,6 +49,20 @@ namespace Data.Services
             return await _dbContext.Images.ToListAsync();
         }
 
+        public async Task<Image> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Images.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(Image item)
         {
             var temp = _dbContext.Images.FirstOrDefault(a => a.Id == item.Id);

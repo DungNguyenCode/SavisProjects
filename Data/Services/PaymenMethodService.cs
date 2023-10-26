@@ -48,6 +48,20 @@ namespace Data.Services
             return await _dbContext.PaymentMethods.ToListAsync();
         }
 
+        public async Task<PaymentMethod> GetById(Guid Id)
+        {
+            var temp = await _dbContext.PaymentMethods.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(PaymentMethod item)
         {
             var temp = _dbContext.PaymentMethods.FirstOrDefault(a => a.Id == item.Id);

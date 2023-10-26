@@ -47,6 +47,20 @@ namespace Data.Services
             return await _dbContext.VorcherDetails.ToListAsync();
         }
 
+        public async Task<VorcherDetail> GetById(Guid Id)
+        {
+            var temp = await _dbContext.VorcherDetails.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(VorcherDetail item)
         {
             var temp = _dbContext.VorcherDetails.FirstOrDefault(a => a.Id == item.Id);

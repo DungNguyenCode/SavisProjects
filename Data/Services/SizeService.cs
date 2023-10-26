@@ -47,6 +47,20 @@ namespace Data.Services
             return await _dbContext.Sizes.ToListAsync();
         }
 
+        public async Task<Size> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Sizes.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(Size item)
         {
             var temp = _dbContext.Sizes.FirstOrDefault(a => a.Id == item.Id);

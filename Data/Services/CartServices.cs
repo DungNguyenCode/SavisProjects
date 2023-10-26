@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Data.Services
 {
-    public class CartServices :IAllinterface<Cart>
+    public class CartServices : IAllinterface<Cart>
     {
         private readonly ContextDb _dbContext;
 
@@ -46,6 +46,20 @@ namespace Data.Services
         public async Task<IEnumerable<Cart>> GetAll()
         {
             return await _dbContext.Carts.ToListAsync();
+        }
+
+        public async Task<Cart> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Carts.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<bool> Update(Cart item)

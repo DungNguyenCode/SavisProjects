@@ -48,6 +48,20 @@ namespace Data.Services
             return await _dbContext.Materials.ToListAsync();
         }
 
+        public async Task<Material> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Materials.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<bool> Update(Material item)
         {
             var temp = _dbContext.Materials.FirstOrDefault(a => a.Id == item.Id);

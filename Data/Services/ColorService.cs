@@ -7,7 +7,7 @@ using Color = Data.Models.Color;
 
 namespace Data.Services
 {
-    public class ColorService :IAllinterface<Color>
+    public class ColorService : IAllinterface<Color>
     {
         private readonly ContextDb _dbContext;
 
@@ -44,6 +44,20 @@ namespace Data.Services
         public async Task<IEnumerable<Color>> GetAll()
         {
             return await _dbContext.Colors.ToListAsync();
+        }
+
+        public async Task<Color> GetById(Guid Id)
+        {
+            var temp = await _dbContext.Colors.FirstOrDefaultAsync(x => x.Id == Id);
+            try
+            {
+                return temp;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<bool> Update(Color item)
