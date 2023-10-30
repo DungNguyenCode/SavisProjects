@@ -7,24 +7,24 @@ using System.Text;
 namespace Client.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RoleController : Controller
+    public class SizeController : Controller
     {
         private readonly HttpClient _httpClient;
         private readonly INotyfService _notyf;
         private readonly List<string> AllApi;
 
-        public RoleController(HttpClient httpClient, INotyfService notyf)
+        public SizeController(HttpClient httpClient, INotyfService notyf)
         {
             _httpClient = httpClient;
             _notyf = notyf;
             // Khởi tạo danh sách API 
             AllApi = new List<string>
         {
-            "https://localhost:7294/api/Role/get-all",
-            "https://localhost:7294/api/Role/post",
-            "https://localhost:7294/api/Role/getbyid/",
-            "https://localhost:7294/api/Role/put/",
-            "https://localhost:7294/api/Role/delete/",
+            "https://localhost:7294/api/Size/get-all",
+            "https://localhost:7294/api/Size/post",
+            "https://localhost:7294/api/Size/getbyid/",
+            "https://localhost:7294/api/Size/put/",
+            "https://localhost:7294/api/Size/delete/",
         };
 
         }
@@ -37,7 +37,7 @@ namespace Client.Areas.Admin.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<Role>>(responseData);
+                var data = JsonConvert.DeserializeObject<List<Size>>(responseData);
                 return View(data);
             }
             else
@@ -52,7 +52,7 @@ namespace Client.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Role item)
+        public async Task<IActionResult> Create(Size item)
         {
 
             var jsonData = JsonConvert.SerializeObject(item);
@@ -71,7 +71,7 @@ namespace Client.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var response = await _httpClient.GetFromJsonAsync<Role>(AllApi[2] + $"{id}");
+            var response = await _httpClient.GetFromJsonAsync<Size>(AllApi[2] + $"{id}");
             if (response != null)
             {
                 return View(response);
@@ -81,10 +81,10 @@ namespace Client.Areas.Admin.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, Role item)
+        public async Task<IActionResult> Edit(Guid id, Size item)
         {
 
-            var result = await _httpClient.PutAsJsonAsync<Role>(AllApi[3] + $"{id}", item);
+            var result = await _httpClient.PutAsJsonAsync<Size>(AllApi[3] + $"{id}", item);
             if (result.IsSuccessStatusCode)
             {
                 _notyf.Success("Update success!");
@@ -107,5 +107,3 @@ namespace Client.Areas.Admin.Controllers
         }
     }
 }
-
-

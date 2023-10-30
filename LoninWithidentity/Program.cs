@@ -31,6 +31,7 @@ builder.Services.AddScoped<IAllinterface<VorcherDetail>, VorcherDetalService>();
 builder.Services.AddScoped<IAllinterface<Vorcher>, VorcherService>();
 builder.Services.AddScoped<IAllinterface<Accounts>, AccountService>();
 builder.Services.AddScoped<IAllinterface<Cart>, CartServices>();
+builder.Services.AddScoped<IAllinterface<Color>, ColorService>();
 builder.Services.AddScoped<IAllinterface<CartDetails>, CartDetailService>();
 builder.Services.AddScoped<IAllinterface<Category>, CategoryService>();
 builder.Services.AddScoped<IAllinterface<PaymentMethod>, PaymenMethodService>();
@@ -38,13 +39,13 @@ builder.Services.AddScoped<IAllinterface<Address>, AddressService>();
 
 
 var app = builder.Build();
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()); //Thêm cái này vào để không bị chặn khi call API
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()); //Thêm cái này vào để không bị chặn khi call API
 
 app.UseHttpsRedirection();
 

@@ -1,25 +1,26 @@
-﻿@model IEnumerable<Data.Models.Role>
+﻿@model IEnumerable<Data.Models.Size>
 
 @{
-    ViewData["Title"] = "Role Management";
+    ViewData["Title"] = "GetAll";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="card">
     <div class="card-header">
-        <h4 class="card-title">List of Roles</h4>
+        <h4 class="card-title">List of Size</h4>
     </div>
     <div class="card-body">
-        <a class="btn btn-success" asp-controller="Role" asp-action="Create">
-             Create New
+        <a class="btn btn-success" asp-controller="Size" asp-action="Create">
+            Create New
         </a>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Code</th>
                         <th>Status</th>
+                        <th>Create date</th>
+                        <th>Lest Edit</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,12 +31,14 @@
                         {
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Code)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Last_modified_date)</td>
                                 <td>
-                                    <a class="btn btn-primary" asp-controller="Role" asp-action="Edit" asp-route-id="@item.Id">
+                                    <a class="btn btn-primary" asp-controller="Size" asp-action="Edit" asp-route-id="@item.Id">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
-                                    <a class="btn btn-danger" asp-controller="Role" asp-action="Delete" asp-route-id="@item.Id">
+                                    <a class="btn btn-danger" asp-controller="Size" asp-action="Delete" asp-route-id="@item.Id">
                                         <i class="bi bi-trash"></i> Delete
                                     </a>
                                 </td>

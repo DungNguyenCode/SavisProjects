@@ -2,42 +2,50 @@
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PagedList;
 using System.Text;
+
 
 namespace Client.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RoleController : Controller
+    public class ColorController : Controller
     {
         private readonly HttpClient _httpClient;
         private readonly INotyfService _notyf;
         private readonly List<string> AllApi;
 
-        public RoleController(HttpClient httpClient, INotyfService notyf)
+        public ColorController(HttpClient httpClient, INotyfService notyf)
         {
             _httpClient = httpClient;
             _notyf = notyf;
             // Khởi tạo danh sách API 
             AllApi = new List<string>
         {
-            "https://localhost:7294/api/Role/get-all",
-            "https://localhost:7294/api/Role/post",
-            "https://localhost:7294/api/Role/getbyid/",
-            "https://localhost:7294/api/Role/put/",
-            "https://localhost:7294/api/Role/delete/",
+            "https://localhost:7294/api/Color/get-all",
+            "https://localhost:7294/api/Color/post",
+            "https://localhost:7294/api/Color/getbyid/",
+            "https://localhost:7294/api/Color/put/",
+            "https://localhost:7294/api/Color/delete/",
         };
 
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(int? page)
         {
+            if (page == null) page = 1;
 
             var response = await _httpClient.GetAsync(AllApi[0]);//Gửi yêu cầu
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<Role>>(responseData);
+                var data = JsonConvert.DeserializeObject<List<Color>>(responseData);
+                // Sử dụng PagedList để phân trang dữ liệu
+                int pageSize = 10; // Số mục trên mỗi trang
+                int pageNumber = (page ?? 1); // Trang hiện tại
+
+                var pagedData = data.ToPagedList(pageNumber, pageSize);
                 return View(data);
             }
             else
@@ -52,7 +60,7 @@ namespace Client.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Role item)
+        public async Task<IActionResult> Create(Color item)
         {
 
             var jsonData = JsonConvert.SerializeObject(item);
@@ -71,7 +79,7 @@ namespace Client.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var response = await _httpClient.GetFromJsonAsync<Role>(AllApi[2] + $"{id}");
+            var response = await _httpClient.GetFromJsonAsync<Color>(AllApi[2] + $"{id}");
             if (response != null)
             {
                 return View(response);
@@ -81,10 +89,10 @@ namespace Client.Areas.Admin.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, Role item)
+        public async Task<IActionResult> Edit(Guid id, Color item)
         {
 
-            var result = await _httpClient.PutAsJsonAsync<Role>(AllApi[3] + $"{id}", item);
+            var result = await _httpClient.PutAsJsonAsync<Color>(AllApi[3] + $"{id}", item);
             if (result.IsSuccessStatusCode)
             {
                 _notyf.Success("Update success!");
@@ -107,5 +115,3 @@ namespace Client.Areas.Admin.Controllers
         }
     }
 }
-
-
