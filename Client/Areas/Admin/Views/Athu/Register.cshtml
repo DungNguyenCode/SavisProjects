@@ -1,0 +1,113 @@
+﻿@model Client.ViewModel.RegisterVM
+
+@{
+    Layout =null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Star Admin2 </title>
+    <!-- plugins:css -->
+    <link href="~/adminassets/vendors/feather/feather.css" rel="stylesheet" />
+    <link href="~/adminassets/vendors/mdi/css/materialdesignicons.min.css" rel="stylesheet" />
+    <link href="~/adminassets/vendors/ti-icons/css/themify-icons.css" rel="stylesheet" />
+    <link href="~/adminassets/vendors/typicons/typicons.css" rel="stylesheet" />
+    <link href="~/adminassets/vendors/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="~/adminassets/vendors/css/vendor.bundle.base.css" rel="stylesheet" />
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link href="~/adminassets/css/vertical-layout-light/style.css" rel="stylesheet" />
+    <!-- endinject -->
+    <link rel="shortcut icon" href="~/adminassets/images/favicon.png" />
+</head>
+
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth px-0">
+                <div class="row w-100 mx-0">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                            <div class="brand-logo">
+                                <img src="~/adminassets/images/logo.svg" alt="logo">
+                            </div>
+                            <h4>Hello! let's get started</h4>
+                            <h6 class="fw-light">Sign in to continue.</h6>
+                            <form class="pt-3" method="post">
+                                <div class="form-group">
+                                    <label asp-for="Fullname" class="control-label"></label>
+                                    <input type="text" asp-for="Fullname" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Full Name">
+                                    <span asp-validation-for="Fullname" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Dateofbirth" class="control-label"></label>
+                                    <input asp-for="Dateofbirth" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Date">
+                                    <span asp-validation-for="Dateofbirth" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PhoneNumber" class="control-label"></label>
+                                    <input type="text" asp-for="PhoneNumber" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Phone">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Gender" class="control-label"></label>
+                                    <input type="number" asp-for="Gender" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Gender">
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input type="email" asp-for="Email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Password" class="control-label"></label>
+                                    <input type="password" asp-for="Password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Pass">
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                                    <input type="password" asp-for="ConfirmPassword" class="form-control form-control-lg" id="exampleInputPassword" placeholder="Pass">
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <div class="mt-3">
+                                                                  
+                                    <button asp-action="Register" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit">Create Account</button>
+                                    <a asp-action="GetAll" asp-controller="Role" class="btn btn-light">Cancel</a>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="~/adminassets/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/adminassets/js/off-canvas.js"></script>
+    <script src="~/adminassets/js/hoverable-collapse.js"></script>
+    <script src="~/adminassets/js/template.js"></script>
+    <script src="~/adminassets/js/settings.js"></script>
+    <script src="~/adminassets/js/todolist.js"></script>
+    <!-- endinject -->
+</body>
+
+</html>
+

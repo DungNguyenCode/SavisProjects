@@ -34,7 +34,6 @@ namespace Data.ContextDbSavis
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartDetails>  CartDetails { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Accounts> Accounts { get; set; }
         public DbSet<Notifi>  Notifis { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }

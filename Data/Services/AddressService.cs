@@ -32,7 +32,7 @@ namespace Data.Services
 
         public async Task<bool> Delete(Guid Id)
         {
-            var acc = _dbContext.Accounts.FirstOrDefault(a => a.Id == Id);
+            var acc = _dbContext.Addresses.FirstOrDefault(a => a.Id == Id);
 
             if (acc != null)
             {

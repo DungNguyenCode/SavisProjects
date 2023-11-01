@@ -2,9 +2,10 @@
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PagedList;
 using System.Text;
 
+using PagedList.Core.Mvc;
+using PagedList.Core;
 
 namespace Client.Areas.Admin.Controllers
 {
@@ -41,12 +42,16 @@ namespace Client.Areas.Admin.Controllers
             {
                 var responseData = await response.Content.ReadAsStringAsync();
                 var data = JsonConvert.DeserializeObject<List<Color>>(responseData);
+
+                // Tạo một IQueryable từ danh sách
+                IQueryable<Color> queryableData = data.AsQueryable();
+
                 // Sử dụng PagedList để phân trang dữ liệu
                 int pageSize = 10; // Số mục trên mỗi trang
                 int pageNumber = (page ?? 1); // Trang hiện tại
+                var model = queryableData.OrderByDescending(c => c.Name).ToPagedList(pageNumber, pageSize);
 
-                var pagedData = data.ToPagedList(pageNumber, pageSize);
-                return View(data);
+                return View(model);
             }
             else
             {
@@ -54,6 +59,7 @@ namespace Client.Areas.Admin.Controllers
                 return View();
             }
         }
+
 
         public IActionResult Create()
         {

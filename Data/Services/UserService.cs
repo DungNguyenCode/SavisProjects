@@ -22,6 +22,9 @@ namespace Data.Services
         {
             if (item != null)
             {
+                item.Status = 1;
+                item.Avatar = "none";
+                item.Id_Role = Guid.Parse("f52854d7-cac0-44c7-bb87-7cd575648091");
                 await _dbContext.AddAsync(item);
                 await _dbContext.SaveChangesAsync();
                 return true;
@@ -67,12 +70,15 @@ namespace Data.Services
             if (temp != null)
             {
                 temp.Status = item.Status;
-                temp.Point = item.Point;
                 temp.PhoneNumber = item.PhoneNumber;
                 temp.Fullname = item.Fullname;
                 temp.Dateofbirth = item.Dateofbirth;
                 temp.Email = item.Email;
                 temp.Gender = item.Gender;
+                temp.Password =item.Password;
+                temp.Last_modified_date = DateTime.Now;
+                temp.Avatar = item.Avatar;
+                temp.Id_Role = item.Id_Role;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

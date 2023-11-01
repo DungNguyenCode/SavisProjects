@@ -14,8 +14,8 @@ namespace Data.Models
         [Key]
         public Guid Id { get; set; }
         public DateTime Create_at { get; set; }
-        [ForeignKey("Account")]
-        public Guid Id_account { get; set; }
-        public virtual Accounts? Account { get; set; }
+        [ForeignKey("User")]
+        public Guid Id_User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

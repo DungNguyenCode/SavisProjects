@@ -68,6 +68,7 @@ namespace Data.Services
             {
                 temp.Code = item.Code;
                 temp.Name = item.Name;
+                temp.Status = item.Status;
                 _dbContext.Update(temp);
                 await _dbContext.SaveChangesAsync();
                 return true;

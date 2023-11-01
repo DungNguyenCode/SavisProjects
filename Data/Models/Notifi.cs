@@ -19,6 +19,6 @@ namespace Data.Models
         public DateTime Last_modified_date { get; set; }
         [ForeignKey("Account")]
         public Guid Id_account { get; set; }
-        public virtual Accounts? Account { get; set; }
+
     }
 }

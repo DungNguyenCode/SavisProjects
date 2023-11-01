@@ -69,7 +69,7 @@ namespace Data.Services
               temp.Address = item.Address;
                 temp.PhoneNumber = item.PhoneNumber;
                 temp.Transportfee = item.Transportfee;
-                temp.Id_Account = item.Id_Account;
+                temp.Id_User = item.Id_User;
                 temp.Status = item.Status;
                 temp.TotalMoney = item.TotalMoney;
                 temp.Last_modified_date = DateTime.Now;

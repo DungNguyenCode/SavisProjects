@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ContextDb))]
-    [Migration("20231020102201_updatedb_01")]
-    partial class updatedb_01
+    [Migration("20231031065157_updatedb_4")]
+    partial class updatedb_4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,40 +23,6 @@ namespace Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Data.Models.Accounts", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("Id_User")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Last_modified_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id_User")
-                        .IsUnique();
-
-                    b.ToTable("Accounts");
-                });
 
             modelBuilder.Entity("Data.Models.Address", b =>
                 {
@@ -116,12 +82,12 @@ namespace Data.Migrations
                     b.Property<DateTime>("Create_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Id_account")
+                    b.Property<Guid>("Id_User")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id_account");
+                    b.HasIndex("Id_User");
 
                     b.ToTable("Carts");
                 });
@@ -298,8 +264,6 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id_account");
-
                     b.ToTable("Notifis");
                 });
 
@@ -316,7 +280,7 @@ namespace Data.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Id_Account")
+                    b.Property<Guid>("Id_User")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Last_modified_date")
@@ -345,7 +309,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id_Account");
+                    b.HasIndex("Id_User");
 
                     b.ToTable("Orders");
                 });
@@ -519,7 +483,15 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -537,7 +509,6 @@ namespace Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
@@ -554,6 +525,13 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("Dateofbirth")
                         .HasColumnType("datetime2");
 
@@ -566,11 +544,18 @@ namespace Data.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<Guid>("Id_Role")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Last_modified_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Point")
-                        .HasColumnType("real");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -650,17 +635,6 @@ namespace Data.Migrations
                     b.ToTable("VorcherDetails");
                 });
 
-            modelBuilder.Entity("Data.Models.Accounts", b =>
-                {
-                    b.HasOne("Data.Models.User", "User")
-                        .WithOne("Account")
-                        .HasForeignKey("Data.Models.Accounts", "Id_User")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Data.Models.Address", b =>
                 {
                     b.HasOne("Data.Models.User", "User")
@@ -674,13 +648,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Cart", b =>
                 {
-                    b.HasOne("Data.Models.Accounts", "Account")
+                    b.HasOne("Data.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Id_account")
+                        .HasForeignKey("Id_User")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Models.CartDetails", b =>
@@ -709,26 +683,15 @@ namespace Data.Migrations
                     b.Navigation("ProductDetail");
                 });
 
-            modelBuilder.Entity("Data.Models.Notifi", b =>
-                {
-                    b.HasOne("Data.Models.Accounts", "Account")
-                        .WithMany()
-                        .HasForeignKey("Id_account")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
             modelBuilder.Entity("Data.Models.Order", b =>
                 {
-                    b.HasOne("Data.Models.Accounts", "Account")
+                    b.HasOne("Data.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Id_Account")
+                        .HasForeignKey("Id_User")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Account");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Data.Models.OrderDetails", b =>
@@ -810,6 +773,13 @@ namespace Data.Migrations
                     b.Navigation("Size");
                 });
 
+            modelBuilder.Entity("Data.Models.Role", b =>
+                {
+                    b.HasOne("Data.Models.User", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Data.Models.VorcherDetail", b =>
                 {
                     b.HasOne("Data.Models.Vorcher", "Voucher")
@@ -831,7 +801,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.User", b =>
                 {
-                    b.Navigation("Account");
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

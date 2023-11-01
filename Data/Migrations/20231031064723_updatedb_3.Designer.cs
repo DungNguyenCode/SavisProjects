@@ -4,6 +4,7 @@ using Data.ContextDbSavis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ContextDb))]
-    partial class ContextDbModelSnapshot : ModelSnapshot
+    [Migration("20231031064723_updatedb_3")]
+    partial class updatedb_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -484,12 +486,7 @@ namespace Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -524,6 +521,7 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Avatar")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateDate")
@@ -770,13 +768,6 @@ namespace Data.Migrations
                     b.Navigation("Size");
                 });
 
-            modelBuilder.Entity("Data.Models.Role", b =>
-                {
-                    b.HasOne("Data.Models.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Data.Models.VorcherDetail", b =>
                 {
                     b.HasOne("Data.Models.Vorcher", "Voucher")
@@ -794,11 +785,6 @@ namespace Data.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Voucher");
-                });
-
-            modelBuilder.Entity("Data.Models.User", b =>
-                {
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }
