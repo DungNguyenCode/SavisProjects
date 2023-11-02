@@ -1,5 +1,6 @@
 ﻿using Data.Interface;
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class RoleController : ControllerBase
     {
         private readonly IAllinterface<Role> _IAll;
@@ -17,6 +19,7 @@ namespace API.Controllers
         }
 
         // GET: api/<AccountController>
+      
         [HttpGet("get-all")]
         public async Task<IEnumerable<Role>> GetAll()
         {

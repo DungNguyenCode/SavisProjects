@@ -1,8 +1,10 @@
-﻿using AspNetCoreHero.ToastNotification.Abstractions;
+﻿using API.ModelView;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Client.Extensions;
 using Client.ViewModel;
 using Data.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -10,11 +12,14 @@ using Newtonsoft.Json;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
+using LoginV = Client.ViewModel.LoginV;
 
 namespace Client.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [AllowAnonymous]
     public class AthuController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -22,7 +27,7 @@ namespace Client.Areas.Admin.Controllers
         private readonly List<string> AllApi;
         private readonly IConfiguration _configuration;
 
-        public AthuController(HttpClient httpClient, INotyfService notyf,IConfiguration configuration)
+        public AthuController(HttpClient httpClient, INotyfService notyf, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _notyf = notyf;
@@ -36,6 +41,7 @@ namespace Client.Areas.Admin.Controllers
                 "https://localhost:7294/api/User/getbyid/",
                 "https://localhost:7294/api/User/put/",
                 "https://localhost:7294/api/User/delete/",
+                "https://localhost:7294/api/User/login",
             };
 
         }
@@ -64,7 +70,7 @@ namespace Client.Areas.Admin.Controllers
 
             // Thực hiện đăng ký người dùng và xử lý lỗi hoặc thành công từ API
             var md5pass = MD5Pass.GetMd5Hash(item.Password);
-            
+
             item.Password = md5pass;
             var jsonData = JsonConvert.SerializeObject(item);
 
@@ -93,7 +99,7 @@ namespace Client.Areas.Admin.Controllers
         }
         [HttpPost]
 
-        public async Task<IActionResult> Login(LoginVm item)
+        public async Task<IActionResult> Login(LoginV item)
         {
             if (string.IsNullOrEmpty(item.Email) || string.IsNullOrEmpty(item.Password))
             {
@@ -101,49 +107,59 @@ namespace Client.Areas.Admin.Controllers
                 return RedirectToAction("Login", "Athu");
             }
 
-            var md5pass = MD5Pass.GetMd5Hash(item.Password);
-            var result = await _httpClient.GetAsync(AllApi[0]);
+            //var md5pass = MD5Pass.GetMd5Hash(item.Password);
+            // item.Password = md5pass;
+            var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
 
-            if (result.IsSuccessStatusCode)
+            var response = await _httpClient.PostAsync("https://localhost:7294/api/User/login", content);
+
+            if (response.IsSuccessStatusCode)
             {
-                var jsonData = await result.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<User>>(jsonData);
-                var temp = data.FirstOrDefault(c => c.Email == item.Email && c.Password == md5pass);
+                var responseData = await response.Content.ReadAsStringAsync();
+                var loginResult = JsonConvert.DeserializeObject<TokenV>(responseData);
+                TokenV tokenV = new TokenV { AccessToken = loginResult.AccessToken };
+                var handler = new JwtSecurityTokenHandler();
+                var jwt = handler.ReadJwtToken(loginResult.AccessToken);
 
-                if (temp != null)
+                var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, item.Email), // Thêm thông tin khác của người dùng nếu cần
+
+                        };
+
+                // Trích xuất thông tin quyền từ mã thông báo JWT
+                var roles = jwt.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+
+                // Thêm các quyền từ mã thông báo JWT vào danh tính của người dùng
+                if (roles.Any())
                 {
-                    var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Email, temp.Email),
-                new Claim(ClaimTypes.Name, temp.Fullname),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("Avatar", temp.Avatar),
-                new Claim("PhoneNumber", temp.PhoneNumber)
-            };
-
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var athenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]));
-
-                    var tokenDescriptor = new SecurityTokenDescriptor
+                    foreach (var role in roles)
                     {
-                        Subject = new ClaimsIdentity(authClaims),
-                        Expires = DateTime.UtcNow.AddHours(2),
-                        SigningCredentials = new SigningCredentials(athenKey, SecurityAlgorithms.HmacSha256Signature),
-                        Issuer = _configuration["JWT:Issuer"],
-                        Audience = _configuration["JWT:Audience"]
-                    };
-
-                    var token = tokenHandler.CreateToken(tokenDescriptor);
-                    var jwt = tokenHandler.WriteToken(token);                  
-
-                    _notyf.Success($"Login succses! Welcome {temp.Fullname}");
-                    return Redirect("/Admin");
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                       
+                    }
                 }
+                else
+                {
+                    // Nếu không có quyền từ mã thông báo JWT, thêm quyền mặc định "Customer"
+                    claims.Add(new Claim(ClaimTypes.Role, "Customer"));
+                }
+                var customData = jwt.Claims.FirstOrDefault(c => c.Type == "Avatar")?.Value;
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                Response.Cookies.Append("AccessToken", loginResult.AccessToken);
+
+                _notyf.Success($"Login success! Welcome {item.Email}");
+                return Redirect("~/Admin/Role/GetAll");
             }
 
-            _notyf.Error($"Error: {result.StatusCode.ToString()}!");
+            _notyf.Error($"Error: {response.StatusCode.ToString()}!");
             return BadRequest("Đăng nhập thất bại");
+
         }
+
 
 
     }

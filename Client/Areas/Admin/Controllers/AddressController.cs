@@ -1,11 +1,14 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace Client.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+
     public class AddressController : Controller
     {
         private readonly HttpClient _httpClient;

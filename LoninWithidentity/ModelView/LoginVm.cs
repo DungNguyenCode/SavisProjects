@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Client.ViewModel
+namespace API.ModelView
 {
     public class LoginVm
     {
-        [Required(ErrorMessage ="Email not null!")]
-        [EmailAddress]
+        [Required]
+        [MaxLength(50)]
         public string Email { get; set; }
-        [Required(ErrorMessage = "Password not null!")]
+        [Required]
+        [MaxLength(250)]
         public string Password { get; set; }
     }
 }

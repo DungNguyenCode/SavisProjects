@@ -1,5 +1,6 @@
 ﻿using Data.Interface;
 using Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace API.Controllers
     [ApiController]
     public class ColorController : ControllerBase
     {
+        
         private readonly IAllinterface<Color> _IAll;
 
         public ColorController(IAllinterface<Color> iacc)

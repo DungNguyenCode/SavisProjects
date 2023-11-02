@@ -1,4 +1,4 @@
-﻿@model Client.ViewModel.LoginVm
+﻿@model Client.ViewModel.LoginV
 
 @{
     Layout = null;
@@ -43,7 +43,7 @@
                             <form class="pt-3" method="post">
                                 <div class="form-group">
                                     <label asp-for="Email" class="control-label"></label>
-                                    <input type="email" asp-for="Email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
+                                    <input type="text" asp-for="Email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">

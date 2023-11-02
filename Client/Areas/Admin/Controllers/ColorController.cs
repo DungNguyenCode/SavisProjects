@@ -6,10 +6,12 @@ using System.Text;
 
 using PagedList.Core.Mvc;
 using PagedList.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Client.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    
     public class ColorController : Controller
     {
         private readonly HttpClient _httpClient;
