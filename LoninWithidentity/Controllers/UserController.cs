@@ -47,6 +47,8 @@ namespace API.Controllers
         {
             if (user != null)
             {
+                user.Id_Role = _context.Roles.SingleOrDefault(c => c.Name == "Customer").Id;
+                user.Avatar = "None";
                 await _IUser.Add(user);
                 return Ok(user);
             }
@@ -114,7 +116,12 @@ namespace API.Controllers
 
             var secretKeyBytes = Encoding.UTF8.GetBytes(_Configuration["JWT:SecretKey"]);
 
-            var user = _context.Roles.SingleOrDefault(p => p.Id == item.Id_Role);
+            var roles = _context.Roles.SingleOrDefault(p => p.Id == item.Id_Role);
+            if (roles==null)
+            {
+                roles.Name = "Customer";
+            }
+           
 
 
             var tokenDescription = new SecurityTokenDescriptor
@@ -124,15 +131,15 @@ namespace API.Controllers
                 Subject = new ClaimsIdentity(new[] {
                 new Claim(ClaimTypes.Name, item.Fullname),
                 new Claim(JwtRegisteredClaimNames.Email, item.Email),
-                new Claim(JwtRegisteredClaimNames.Sub, item.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("UserName", item.Fullname),
                 new Claim("Id", item.Id.ToString()),
                 new Claim("Id_Role", item.Id_Role.ToString()),
                 new Claim("Avatar", item.Avatar.ToString()),
-                new Claim(ClaimTypes.Role,user.Name)
+                new Claim(ClaimTypes.Role,roles.Name),
+                
 
-
+                
                 //roles
             }),
 

@@ -16,7 +16,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
               .AddCookie(options =>
               {
                   options.Cookie.HttpOnly = true;
-                  options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                  options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                   options.LoginPath = "/Admin/Athu/Login";
                   options.AccessDeniedPath = "/Admin/Auth/AccessDenied";
                   options.SlidingExpiration = true;

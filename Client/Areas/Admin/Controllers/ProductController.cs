@@ -65,7 +65,7 @@ namespace Client.Areas.Admin.Controllers
             if (responese.IsSuccessStatusCode)
             {
                 _notyf.Success("Thêm thành công!");
-                return RedirectToAction("GetAll");
+                return Redirect("~/Admin/Product/GetAll");
             }
             _notyf.Error("Lỗi!");
             return View();
@@ -90,7 +90,7 @@ namespace Client.Areas.Admin.Controllers
             if (result.IsSuccessStatusCode)
             {
                 _notyf.Success("Update success!");
-                return RedirectToAction("GetAll");
+                 return Redirect("~/Admin/Product/GetAll");
             }
             _notyf.Error($"Error: {result.StatusCode.ToString()}"!);
             return View();
@@ -101,7 +101,7 @@ namespace Client.Areas.Admin.Controllers
             if (result.IsSuccessStatusCode)
             {
                 _notyf.Success("Delete success!");
-                return RedirectToAction("GetAll");
+                 return Redirect("~/Admin/Product/GetAll");
             }
             _notyf.Error($"Error: {result.StatusCode.ToString()}"!);
             return View();

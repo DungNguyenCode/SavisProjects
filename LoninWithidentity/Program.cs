@@ -38,7 +38,7 @@ builder.Services.AddDbContext<ContextDb>(options =>
 });
 builder.Services.AddScoped<IAllinterface<User>, UserService>();
 builder.Services.AddScoped<IAllinterface<Brand>, BrandService>();
-builder.Services.AddScoped<IAllinterface<Role>, RoleService>();
+builder.Services.AddTransient<IAllinterface<Role>, RoleService>();
 builder.Services.AddScoped<IAllinterface<Size>, SizeService>();
 builder.Services.AddScoped<IAllinterface<Product>, ProductService>();
 builder.Services.AddScoped<IAllinterface<Image>, ImageService>();

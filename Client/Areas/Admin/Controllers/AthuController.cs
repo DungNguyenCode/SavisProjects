@@ -82,7 +82,7 @@ namespace Client.Areas.Admin.Controllers
                 // Đăng nhập người dùng sau khi đăng ký thành công (nếu cần)
                 // Xử lý hành động sau khi đăng ký thành công (chẳng hạn chuyển hướng đến trang chính)
                 _notyf.Success("Đăng ký tài khoản thành công!");
-                return Redirect("/Admin");
+                return Redirect("~/Admin/Athu/Login");
 
             }
             else
@@ -107,11 +107,11 @@ namespace Client.Areas.Admin.Controllers
                 return RedirectToAction("Login", "Athu");
             }
 
-            //var md5pass = MD5Pass.GetMd5Hash(item.Password);
-            // item.Password = md5pass;
+            var md5pass = MD5Pass.GetMd5Hash(item.Password);
+            item.Password = md5pass;
             var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("https://localhost:7294/api/User/login", content);
+            var response = await _httpClient.PostAsync(AllApi[5], content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -128,31 +128,51 @@ namespace Client.Areas.Admin.Controllers
                         };
 
                 // Trích xuất thông tin quyền từ mã thông báo JWT
-                var roles = jwt.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+                var roles = jwt.Claims.ToList();
+                bool checkRoleAdmin = false;
 
                 // Thêm các quyền từ mã thông báo JWT vào danh tính của người dùng
                 if (roles.Any())
                 {
                     foreach (var role in roles)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, role));
-                       
+                        if (role.Type.ToString() == "role")
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, role.Value));
+                            checkRoleAdmin = true;
+
+                            break;
+                        }
+
                     }
-                }
-                else
-                {
-                    // Nếu không có quyền từ mã thông báo JWT, thêm quyền mặc định "Customer"
-                    claims.Add(new Claim(ClaimTypes.Role, "Customer"));
+                    if (checkRoleAdmin == false)
+                    {
+                        // Nếu không có quyền từ mã thông báo JWT, thêm quyền mặc định "Customer"
+                        claims.Add(new Claim(ClaimTypes.Role, "Customer"));
+                    }
+
                 }
                 var customData = jwt.Claims.FirstOrDefault(c => c.Type == "Avatar")?.Value;
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                Response.Cookies.Append("AccessToken", loginResult.AccessToken);
+                Response.Cookies.Append("AccessToken", loginResult.RefreshToken);
+                if (checkRoleAdmin == true)
+                {
+                    _notyf.Success($"Login success! Welcome {item.Email}");
+                    return Redirect("~/Admin/Home/Index");
+                    
+                }
+                else
+                {
+                    
+                    return Redirect("~/Home/Index");
+                    
+                }
 
-                _notyf.Success($"Login success! Welcome {item.Email}");
-                return Redirect("~/Admin/Role/GetAll");
+                
+               
             }
 
             _notyf.Error($"Error: {response.StatusCode.ToString()}!");
@@ -160,7 +180,12 @@ namespace Client.Areas.Admin.Controllers
 
         }
 
-
+        public async Task<IActionResult> Signout()
+        {
+            Response.Cookies.Delete("AccessToken");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("~/Admin/Athu/Login");
+        }
 
     }
 }

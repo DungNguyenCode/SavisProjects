@@ -11,7 +11,7 @@
         <h4 class="card-title">Create a Role</h4>
     </div>
     <div class="card-body">
-        <form asp-action="Create" class="forms-sample">
+        <form asp-action="Create" asp-area="Admin" asp-controller="Role" class="forms-sample">
             <div class="mb-3">
                 <label asp-for="Name" class="form-label">Role Name</label>
                 <input asp-for="Name" class="form-control" />
@@ -23,8 +23,8 @@
                 <span asp-validation-for="Code" class="text-danger"></span>
             </div>
             <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <a asp-action="GetAll" class="btn btn-light">Cancel</a>
+                <button type="submit"  class="btn btn-primary">Submit</button>
+                <a asp-action="GetAll" asp-area="Admin" class="btn btn-light">Cancel</a>
             </div>
         </form>
     </div>

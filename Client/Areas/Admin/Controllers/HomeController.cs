@@ -6,7 +6,7 @@ namespace Client.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         [Area("Admin")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();

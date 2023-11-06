@@ -18,7 +18,6 @@ namespace API.Controllers
             _IAll = iacc;
         }
 
-        [Authorize(Policy = "CustomerPolicy")]
         // GET: api/<AccountController>
         [HttpGet("get-all")]
         public async Task<IEnumerable<Address>> GetAll()
@@ -30,7 +29,6 @@ namespace API.Controllers
 
         // POST api/<AccountController>
         [HttpPost("post")]
-        [Authorize(Policy = "CustomerPolicy")]
         public async Task<IActionResult> Post(Address item)
         {
             if (item != null)

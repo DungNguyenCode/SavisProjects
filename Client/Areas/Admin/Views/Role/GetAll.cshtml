@@ -10,7 +10,7 @@
         <h4 class="card-title">List of Roles</h4>
     </div>
     <div class="card-body">
-        <a class="btn btn-success" asp-controller="Role" asp-action="Create">
+        <a class="btn btn-success" asp-area="Admin" asp-controller="Role" asp-action="Create">
              Create New
         </a>
         <div class="table-responsive">
@@ -24,18 +24,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Any())
+                    @if (Model != null || Model.Any())
                     {
                         @foreach (var item in Model)
                         {
                             <tr>
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Code)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
                                 <td>
-                                    <a class="btn btn-primary" asp-controller="Role" asp-action="Edit" asp-route-id="@item.Id">
+                                    <a class="btn btn-primary" asp-controller="Role" asp-area="Admin" asp-action="Edit" asp-area="Admin" asp-route-id="@item.Id">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
-                                    <a class="btn btn-danger" asp-controller="Role" asp-action="Delete" asp-route-id="@item.Id">
+                                    <a class="btn btn-danger" asp-controller="Role" asp-action="Delete" asp-area="Admin" asp-route-id="@item.Id">
                                         <i class="bi bi-trash"></i> Delete
                                     </a>
                                 </td>

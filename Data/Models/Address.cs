@@ -17,7 +17,7 @@ namespace Data.Models
         public string ?Wards { get; set; }
         public string ?Detailed_address { get; set; }
         [ForeignKey("User")]
-        public Guid Id_User { get; set; }
+        public Guid ?Id_User { get; set; }
         public virtual User? User { get; set; }
     }
 }
