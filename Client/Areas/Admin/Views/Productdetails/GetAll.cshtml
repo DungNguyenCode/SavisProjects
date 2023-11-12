@@ -1,0 +1,192 @@
+﻿@using Data.Models;
+@using System.Globalization;
+@model IEnumerable<Data.Models.ProductDetail>
+
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@functions {
+    private string GetBrandName(Guid brandId)
+    {
+        if (ViewBag.Brands != null && brandId != Guid.Empty)
+        {
+            var brands = ViewBag.Brands as List<Brand>;
+            var brand = brands.FirstOrDefault(b => b.Id == brandId);
+            if (brand != null)
+            {
+                return brand.Name;
+            }
+        }
+        return "No Data"; // Hoặc trả về một giá trị mặc định khác tùy theo trường hợp
+    }
+    private string GetColorName(Guid colorId)
+    {
+        var colors = ViewBag.Color as List<Color>;
+        var color = colors.FirstOrDefault(c => c.Id == colorId);
+        if (color != null)
+        {
+            return color.Name;
+        }
+        return "No Data";
+    }
+    private string GetMaterial(Guid materialId)
+    {
+        var mates = ViewBag.Material as List<Material>;
+        var mate = mates.FirstOrDefault(c => c.Id == materialId);
+        if (mate != null)
+        {
+            return mate.Name;
+        }
+        return "No Data";
+    }
+    private string GetCategoryName(Guid cateId)
+    {
+        if (ViewBag.Brands != null && cateId != Guid.Empty)
+        {
+            var cates = ViewBag.Category as List<Category>;
+            var cate = cates.FirstOrDefault(b => b.Id == cateId);
+            if (cate != null)
+            {
+                return cate.Name;
+            }
+        }
+        return "No Data";
+    }
+    private string GetSizeName(Guid sizeId)
+    {
+        if (ViewBag.Size != null && sizeId != Guid.Empty)
+        {
+            var sizes = ViewBag.Size as List<Size>;
+            var size = sizes.FirstOrDefault(b => b.Id == sizeId);
+            if (size != null)
+            {
+                return size.Name;
+            }
+        }
+        return "No Data";
+    }
+    @functions {
+        private string GetImgFile(Guid imgId, List<Image> images)
+        {
+            if (images != null && imgId != Guid.Empty)
+            {
+                var img = images.FirstOrDefault(i => i.Id == imgId);
+                if (img != null)
+                {
+                    return img.ImageFile;
+                }
+            }
+            return string.Empty;
+        }
+    }
+        private Product GetPro(Guid proId)
+        {
+            if (ViewBag.Pros != null && proId != Guid.Empty)
+            {
+                var pros = ViewBag.Pros as List<Product>;
+                var pro = pros.FirstOrDefault(b => b.Id == proId);
+                if (pro != null)
+                {
+                    return pro;
+                }
+            }
+    return new Product()
+            {
+
+                Name = "No Data",
+                Code = "000",
+                Quantity = 0000,
+
+
+            };
+        }
+}
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">List of Product Details</h4>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-success" asp-controller="Productdetails" asp-action="Create">
+            Create New
+        </a>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Create date</th>
+                        <th>Last edit</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+                        <th>Brand</th>
+                        <th>Quantity</th>
+                        <th>Code</th>
+                        <th>Color</th>
+                        <th>Material</th>
+                        <th>Size</th>
+                        <th>Category</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@GetPro(item.Id_Product).Name</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreateDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Last_modified_date)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+
+                                <td>
+                                    <span class="badge @(item.Status == 1 ? "badge-success" : "badge-primary")">
+                                        @(item.Status == 1 ? "Còn hàng" : "Hết hàng")
+                                    </span>
+                                </td>
+                                <td>@GetBrandName(item.Id_Brand)</td>
+                                <td>@GetPro(item.Id_Product).Quantity</td>
+                                <td>@GetPro(item.Id_Product).Code</td>
+                                <td>@GetColorName(item.Id_Color)</td>
+                                <td>@GetMaterial(item.Id_Material)</td>
+                                <td>@GetSizeName(item.Id_Size)</td>
+                                <td>@GetCategoryName(item.Id_Category)</td>
+
+                                <td>
+                                    <img src="/productimages/@GetImgFile(item.Id_Product, ViewBag.Images)" alt="Ảnh đại diện" style="width: 150px; height: 150px;">
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-primary" asp-controller="Productdetails" asp-action="Edit" asp-route-id="@item.Id">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger" asp-controller="Productdetails" asp-area="Admin" asp-action="Delete" asp-route-id="@item.Id">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                No Data.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>

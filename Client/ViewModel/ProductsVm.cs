@@ -1,15 +1,21 @@
-﻿namespace Client.ViewModel
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Client.ViewModel
 {
     public class ProductsVm
     {
-        public string? Code { get; set; }
-        public string? Name { get; set; }
-        public int Quantity { get; set; }
-        public DateTime CreateDate { get; set; } = DateTime.Now;
-        public DateTime Last_modified_date { get; set; }
-        public int Status { get; set; }
-        public string NameImg { get; set; }
-        public int StatusImg { get; set; }
-        public string ImageFile { get; set; }
+        public Guid Id_Size { get; set; }
+        public Guid Id_Category { get; set; }
+        public Guid Id_Color { get; set; }
+        public Guid Id_Brand { get; set; }
+        public Guid Id_Material { get; set; }
+        public Guid Id_Product { get; set; }  
+        public string? CodeProduct { get; set; }
+        public  string ?ImageFile { get; set; }
+        public string? NameProduct { get; set; }
+        public int QuantityProduct { get; set; }
+        public float Price { get; set; }
+        public string? Description { get; set; }
+        public int Gender { get; set; }
     }
 }

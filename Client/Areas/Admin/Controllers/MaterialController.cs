@@ -8,7 +8,7 @@ using System.Text;
 namespace Client.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Customer")]
+  //  [Authorize(Roles = "Admin")]
     public class MaterialController : Controller
     {
         private readonly HttpClient _httpClient;

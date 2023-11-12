@@ -1,4 +1,5 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using Client.ViewModel;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ namespace Client.Areas.Admin.Controllers
         {
 
             var response = await _httpClient.GetAsync(AllApi[0]);//Gửi yêu cầu
+
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadAsStringAsync();
@@ -48,7 +50,6 @@ namespace Client.Areas.Admin.Controllers
                 return View();
             }
         }
-
         public IActionResult Create()
         {
             return View();
@@ -56,6 +57,9 @@ namespace Client.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Product item)
         {
+          
+
+        
 
             var jsonData = JsonConvert.SerializeObject(item);
 
@@ -90,7 +94,7 @@ namespace Client.Areas.Admin.Controllers
             if (result.IsSuccessStatusCode)
             {
                 _notyf.Success("Update success!");
-                 return Redirect("~/Admin/Product/GetAll");
+                return Redirect("~/Admin/Product/GetAll");
             }
             _notyf.Error($"Error: {result.StatusCode.ToString()}"!);
             return View();
@@ -101,7 +105,7 @@ namespace Client.Areas.Admin.Controllers
             if (result.IsSuccessStatusCode)
             {
                 _notyf.Success("Delete success!");
-                 return Redirect("~/Admin/Product/GetAll");
+                return Redirect("~/Admin/Product/GetAll");
             }
             _notyf.Error($"Error: {result.StatusCode.ToString()}"!);
             return View();

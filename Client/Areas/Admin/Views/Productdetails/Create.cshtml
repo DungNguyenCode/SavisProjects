@@ -1,0 +1,143 @@
+﻿@using Data.Models;
+@model Client.ViewModel.ProductsVm
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Create a Material</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" class="forms-sample" enctype="multipart/form-data" method="post" >
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="NameProduct" class="form-label">Product Name</label>
+                            <input asp-for="NameProduct" class="form-control" />
+                            <span asp-validation-for="NameProduct" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Id_Color" class="form-label">Select color for this product</label>
+                            @if (ViewBag.Color != null)
+                            {
+                                <select asp-for="Id_Color" class="form-select" aria-label="Select color for this product">
+                                    @foreach (var color in ViewBag.Color as List<Color>)
+                                    {
+                                        <option value="@color.Id">@color.Name</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Id_Brand" class="form-label">Select brand for this product</label>
+                            @if (ViewBag.Brands != null)
+                            {
+                                <select asp-for="Id_Brand" class="form-select" aria-label="Select brand for this product">
+                                    @foreach (var brand in ViewBag.Brands as List<Brand>)
+                                    {
+                                        <option value="@brand.Id">@brand.Name</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Id_Category" class="form-label">Select category for this product</label>
+                            @if (ViewBag.Category != null)
+                            {
+                                <select asp-for="Id_Category" class="form-select" aria-label="Select category for this product">
+                                    @foreach (var category in ViewBag.Category as List<Category>)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Id_Size" class="form-label">Select size for this product</label>
+                            @if (ViewBag.Size != null)
+                            {
+                                <select asp-for="Id_Size" class="form-select" aria-label="Select size for this product">
+                                    @foreach (var size in ViewBag.Size as List<Size>)
+                                    {
+                                        <option value="@size.Id">@size.Name</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Id_Material" class="form-label">Select material for this product</label>
+                            @if (ViewBag.Material != null)
+                            {
+                                <select asp-for="Id_Material" class="form-select" aria-label="Select material for this product">
+                                    @foreach (var material in ViewBag.Material as List<Material>)
+                                    {
+                                        <option value="@material.Id">@material.Name</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ImageFile" class="form-label">Image</label>
+                            <input asp-for="ImageFile" class="form-control" id="imageInput" type="file" />
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Preview Image</label>
+                            <img id="previewImage" src="" alt="Preview Image" class="img-thumbnail" style="display:none;">
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CodeProduct" class="form-label">Product Code</label>
+                            <input asp-for="CodeProduct" class="form-control" />
+                            <span asp-validation-for="CodeProduct" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label">Product Price</label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="QuantityProduct" class="form-label">Product Quantity</label>
+                            <input asp-for="QuantityProduct" class="form-control" />
+                            <span asp-validation-for="QuantityProduct" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Gender" class="form-label">Product Gender</label>
+                            <input asp-for="Gender" class="form-control" />
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Description</label>
+                            <input asp-for="Description" class="form-control" />
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-action="GetAll" class="btn btn-light">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("imageInput").addEventListener("change", function () {
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("previewImage").style.display = "block"; // Hiển thị hình ảnh xem trước
+            document.getElementById("previewImage").src = e.target.result; // Gán hình ảnh xem trước từ tệp mới
+        };
+        reader.readAsDataURL(file);
+    });
+</script>
+
+

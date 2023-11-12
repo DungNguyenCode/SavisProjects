@@ -10,7 +10,7 @@
         <h4 class="card-title">Edit Brand</h4>
     </div>
     <div class="card-body">
-        <form asp-action="Edit" class="forms-sample">
+        <form asp-action="Edit" asp-area="Admin" class="forms-sample">
             <div class="mb-3">
                 <label asp-for="Name" class="form-label">Brand Name</label>
                 <input asp-for="Name" class="form-control" />
